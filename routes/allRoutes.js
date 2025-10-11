@@ -15,6 +15,12 @@ import { validateAuthenticatedPassword, validateOTPandEmail, validatePassword, v
 import { logOut } from '../controllers/logout.js';
 import { resultOfValidation } from '../middlewares/validationResult.js';
 import { refreshToken } from '../controllers/refresh.js';
+import { qoutes } from '../controllers/qoutes.js';
+import { index } from '../controllers/index.js';
+import { news } from '../controllers/news.js';
+import { movers } from '../controllers/movers.js';
+import { autocomplete } from '../controllers/autocomplete.js';
+import { calenders } from '../controllers/calenders.js';
 const router = express.Router();
 
 //auth routes
@@ -32,5 +38,13 @@ router.post('/password/request-change', validateRequestPasswordChange, requestPa
 router.post('/password/verify-otp', validateOTPandEmail, verifyPasswordChangeOTP);
 router.post('/password/change', validatePassword, changePasswordWithToken);
 router.post('/password/reset', verifyToken, validateAuthenticatedPassword, changePasswordAuthenticated);
+
+//data routes
+router.get('/index', index)
+router.get('/news', news)
+router.get('/movers', movers)
+router.get('/qoutes', qoutes)
+router.get('/autocomplete', autocomplete)
+router.get('/calenders', calenders)
 
 export default router;
