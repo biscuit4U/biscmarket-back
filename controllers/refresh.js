@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
-import { pool } from '../database/pg.js';
+import { pool } from '../db/pool.js';
 
 export const refreshToken = async (req, res) => {
     const token = req.cookies.refreshToken;
