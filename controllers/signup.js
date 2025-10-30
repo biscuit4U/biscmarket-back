@@ -13,7 +13,7 @@ export const register = async (req, res) => {
             'SELECT * FROM users WHERE email = $1',
             [email]
         );
-        // console.log(existingUser)
+        console.log(existingUser)
 
         if (existingUser.rows.length > 0) {
             const user = existingUser.rows[0];
@@ -41,7 +41,7 @@ export const register = async (req, res) => {
             }
 
             if (user.is_verified) {
-                return res.status(400).json({ error: 'Email already registered' });
+                return res.status(400).json({ message: 'Email already registered' });
             } else {
                 // Existing unverified user - resend OTP
                 const newOtp = generateOTP();
@@ -54,7 +54,11 @@ export const register = async (req, res) => {
 
                 await sendOTPEmail(email, newOtp);
 
-                return res.json({ message: 'OTP resent to your email' });
+                return res.json({
+                    message: 'OTP resent to your email',
+                    email: email
+                }
+                );
             }
         }
 

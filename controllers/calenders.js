@@ -2,7 +2,7 @@ import axios from "axios";
 import "dotenv/config"
 export const calenders = async (req, res) => {
     const today = new Date().getTime();
-    const week = new Date(today + (1000 * 60 * 60 * 24 * 10)).getTime()
+    const week = new Date(today + (1000 * 60 * 60 * 24 * 5)).getTime()
 
     try {
         const response = await axios.get(`https://yahoo-finance166.p.rapidapi.com/api/calendar/get-events`,

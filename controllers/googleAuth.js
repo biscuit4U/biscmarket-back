@@ -2,9 +2,12 @@ import { generateAccessToken, generateRefreshToken } from "../utils/auth.js";
 import pool from "../db/pool.js";
 import xss from "xss";
 export const googleAuth = async (req, res) => {
-    const { googleId } = xss(req.body.googleId)
-    const { email } = xss(req.body.email)
-    const { name } = xss(req.body.name)
+    const googleId = xss(req.body.google_token)
+    const email = xss(req.body.email)
+    const name = xss(req.body.name)
+
+
+    console.log(googleId, email, name)
 
     try {
         const existingUser = await pool.query(
@@ -39,10 +42,18 @@ export const googleAuth = async (req, res) => {
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
 
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        });
+
+
         res.json({
             message: 'Google login successful!',
-            user: { id: user.id, email: user.email },
-            tokens: { accessToken, refreshToken }
+            user: { name: user.name, id: user.id, email: user.email },
+            accessToken
         });
 
     } catch (error) {

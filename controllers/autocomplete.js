@@ -13,7 +13,7 @@ export const autocomplete = async (req, res) => {
             {
                 params: { search: prefix },
                 headers: {
-                    'x-rapidapi-key': '0c8b8a1248msh05791a5363eb7a7p12b41ajsne1bcf2853fb7',
+                    'x-rapidapi-key': process.env.YH_API,
                     'x-rapidapi-host': 'yahoo-finance15.p.rapidapi.com'
                 }
             }

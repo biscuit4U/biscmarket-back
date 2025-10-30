@@ -14,6 +14,7 @@ export const login = async (req, res) => {
             [email]
         );
 
+        console.log(userResult.rows.length)
         if (userResult.rows.length === 0) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
@@ -29,6 +30,7 @@ export const login = async (req, res) => {
         }
 
         const isPasswordValid = await comparePassword(password, user.password_hash);
+        console.log(isPasswordValid)
 
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid email or password' });

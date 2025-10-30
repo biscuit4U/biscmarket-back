@@ -7,8 +7,10 @@ export const verifyEmail = async (req, res) => {
     const email = xss(req.body.email);
     const otp = xss(req.body.otp);
 
+    console.log(email, otp)
 
     try {
+        console.log(email, otp)
         // Find user by email and OTP
         const userResult = await pool.query(
             `SELECT * FROM users 
@@ -16,11 +18,16 @@ export const verifyEmail = async (req, res) => {
             [email, otp]
         );
 
+        console.log(userResult)
         if (userResult.rows.length === 0) {
+            // console.log(email, otp)
+
             return res.status(400).json({
                 error: 'Invalid or expired OTP. Please request a new one.'
             });
         }
+
+        console.log(email, otp)
 
         const user = userResult.rows[0];
 
@@ -54,6 +61,7 @@ export const verifyEmail = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(email, otp)
         console.error('Email verification error:', error);
         res.status(500).json({
             error: 'Internal server error during email verification'

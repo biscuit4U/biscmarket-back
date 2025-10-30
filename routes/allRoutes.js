@@ -21,6 +21,14 @@ import { news } from '../controllers/news.js';
 import { movers } from '../controllers/movers.js';
 import { autocomplete } from '../controllers/autocomplete.js';
 import { calenders } from '../controllers/calenders.js';
+import {
+    profile,
+    incomeStatement,
+    balanceSheet,
+    recommendation,
+    insider,
+    earnings
+} from '../controllers/ticker.js'
 const router = express.Router();
 
 //auth routes
@@ -44,7 +52,14 @@ router.get('/index', index)
 router.get('/news', news)
 router.get('/movers', movers)
 router.get('/qoutes', qoutes)
-router.get('/autocomplete', autocomplete)
+router.post('/autocomplete', autocomplete)
 router.get('/calenders', calenders)
+
+router.get('/profile', profile)
+router.get('/income-statement', incomeStatement)
+router.get('/balance-sheet', balanceSheet)
+router.get('/recommendation', recommendation)
+router.get('/insider', insider)
+router.get('/earnings', earnings)
 
 export default router;

@@ -9,7 +9,8 @@ export const refreshToken = async (req, res) => {
     jwt.verify(token, process.env.JWT_REFRESH_SECRET, async (err, user) => {
         if (err) return res.status(403).json({ message: "Invalid refresh token" });
 
-        const userInfo = await pool.query('SELECT * FROM users WHERE id = $1', [user.id])
+        console.log(user)
+        const userInfo = await pool.query('SELECT * FROM users WHERE id = $1', [user.userId])
         const { id, email, name } = userInfo.rows[0]
 
 

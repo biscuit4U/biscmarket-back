@@ -1,10 +1,10 @@
 import { hashPassword, generateOTP, sendOTPEmail, comparePassword } from "../utils/auth.js";
 import xss from "xss";
 import pool from "../db/pool.js";
+import jwt from "jsonwebtoken"
 export const requestPasswordChange = async (req, res) => {
-    const { email } = xss(req.body.email)
-
-
+    const email = xss(req.body.email)
+    console.log(email)
     try {
         const userResult = await pool.query(
             'SELECT * FROM users WHERE email = $1 AND is_verified = TRUE',
@@ -40,8 +40,8 @@ export const requestPasswordChange = async (req, res) => {
 };
 
 export const verifyPasswordChangeOTP = async (req, res) => {
-    const { email } = xss(req.body.email)
-    const { otp } = xss(req.body.otp)
+    const email = xss(req.body.email)
+    const otp = xss(req.body.otp)
 
 
     try {
@@ -62,7 +62,7 @@ export const verifyPasswordChangeOTP = async (req, res) => {
         // Generate a password change token (short-lived)
         const passwordChangeToken = jwt.sign(
             { userId: user.id, purpose: 'password_change' },
-            process.env.JWT_SECRET,
+            process.env.JWT_ACCESS_SECRET,
             { expiresIn: '15m' } // Short-lived token for password change
         );
 
@@ -85,13 +85,13 @@ export const verifyPasswordChangeOTP = async (req, res) => {
 };
 
 export const changePasswordWithToken = async (req, res) => {
-    const { passwordChangeToken } = xss(req.body.passwordChangeToken)
-    const { newPassword } = xss(req.body.newPassword)
+    const passwordChangeToken = xss(req.body.passwordChangeToken)
+    const newPassword = xss(req.body.newPassword)
 
 
     try {
         // Verify the password change token
-        const decoded = jwt.verify(passwordChangeToken, process.env.JWT_SECRET);
+        const decoded = jwt.verify(passwordChangeToken, process.env.JWT_ACCESS_SECRET);
 
         if (decoded.purpose !== 'password_change') {
             return res.status(400).json({ error: 'Invalid token purpose' });
@@ -126,8 +126,8 @@ export const changePasswordWithToken = async (req, res) => {
 
 
 export const changePasswordAuthenticated = async (req, res) => {
-    const { currentPassword } = xss(req.body.currentPassword)
-    const { newPassword } = xss(req.body.newPassword)
+    const currentPassword = xss(req.body.currentPassword)
+    const newPassword = xss(req.body.newPassword)
 
     const userId = req.user.id; // From auth middleware
 

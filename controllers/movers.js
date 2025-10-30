@@ -2,6 +2,7 @@ import axios from "axios"
 import "dotenv/config"
 
 export const movers = async (req, res) => {
+    console.log('movers')
     try {
         const response = await axios.get(`https://yahoo-finance-real-time1.p.rapidapi.com/market/get-movers`,
             {
@@ -12,6 +13,7 @@ export const movers = async (req, res) => {
             }
         )
 
+        console.log(response.data)
         res.status(200).json(response.data)
     } catch (error) {
         console.error('Yahoo Finance API error:', error.message)
