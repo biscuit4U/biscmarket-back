@@ -9,6 +9,9 @@ import router from "./routes/allRoutes.js";
 
 const app = express();
 
+// Add trust proxy setting (REQUIRED for Railway)
+app.set('trust proxy', 1);
+
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
