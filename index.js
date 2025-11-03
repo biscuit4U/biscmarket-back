@@ -9,11 +9,8 @@ import router from "./routes/allRoutes.js";
 
 const app = express();
 
-// Add trust proxy setting (REQUIRED for Railway)
-app.set('trust proxy', 1);
-
 app.use(cors({
-    origin: "https://investment-website-client-side-jugn.vercel.app",
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }))
 
